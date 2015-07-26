@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web.Http;
+﻿using System.Web.Http;
+using System.Net.Http.Formatting;
 
 namespace GitTest
 {
@@ -13,6 +9,10 @@ namespace GitTest
         {
             // Web API 路由
             config.MapHttpAttributeRoutes();
+
+            // Odata配置
+            config.Formatters.JsonFormatter.AddQueryStringMapping("$format", "json", "application/json");
+            config.Formatters.JsonFormatter.AddQueryStringMapping("$format", "xml", "application/xml");
 
             
 
