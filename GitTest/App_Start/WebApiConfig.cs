@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.OData.Extensions;
 using System.Net.Http.Formatting;
 
 namespace GitTest
@@ -14,7 +15,8 @@ namespace GitTest
             config.Formatters.JsonFormatter.AddQueryStringMapping("$format", "json", "application/json");
             config.Formatters.JsonFormatter.AddQueryStringMapping("$format", "xml", "application/xml");
 
-            
+            //允许使用Odata查询
+            config.AddODataQueryFilter();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
