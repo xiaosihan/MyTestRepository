@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Test_SchoolStructure">
+    <Key>
+      <PropertyRef Name="StructureId" />
+    </Key>
+    <Property Name="StructureId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Grade" Type="Int32" />
+    <Property Name="Class" Type="Int32" />
+    <NavigationProperty Name="Test_Student" Relationship="Self.FK_TEST_STU_REFERENCE_TEST_SCH" FromRole="Test_SchoolStructure" ToRole="Test_Student" />
+  </EntityType>
+  <EntityType Name="Test_Student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StructureId" Type="Int32" />
+    <Property Name="StudentNum" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+    <Property Name="BirthDay" Type="DateTime" Precision="0" />
+    <Property Name="Age" Type="Int32" />
+    <NavigationProperty Name="Test_SchoolStructure" Relationship="Self.FK_TEST_STU_REFERENCE_TEST_SCH" FromRole="Test_Student" ToRole="Test_SchoolStructure" />
+    <NavigationProperty Name="Test_TestInfo" Relationship="Self.FK_TEST_TES_REFERENCE_TEST_STU" FromRole="Test_Student" ToRole="Test_TestInfo" />
+  </EntityType>
+  <EntityType Name="Test_Subject">
+    <Key>
+      <PropertyRef Name="SubjectId" />
+    </Key>
+    <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Test_TestInfo" Relationship="Self.FK_TEST_TES_REFERENCE_TEST_SUB" FromRole="Test_Subject" ToRole="Test_TestInfo" />
+  </EntityType>
+  <EntityType Name="Test_TestInfo">
+    <Key>
+      <PropertyRef Name="TestId" />
+    </Key>
+    <Property Name="TestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubjectId" Type="Int32" />
+    <Property Name="Id" Type="Int32" />
+    <Property Name="StartTime" Type="DateTime" Precision="3" />
+    <Property Name="EndTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Test_Student" Relationship="Self.FK_TEST_TES_REFERENCE_TEST_STU" FromRole="Test_TestInfo" ToRole="Test_Student" />
+    <NavigationProperty Name="Test_Subject" Relationship="Self.FK_TEST_TES_REFERENCE_TEST_SUB" FromRole="Test_TestInfo" ToRole="Test_Subject" />
+  </EntityType>
+  <Association Name="FK_TEST_STU_REFERENCE_TEST_SCH">
+    <End Role="Test_SchoolStructure" Type="Self.Test_SchoolStructure" Multiplicity="0..1" />
+    <End Role="Test_Student" Type="Self.Test_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test_SchoolStructure">
+        <PropertyRef Name="StructureId" />
+      </Principal>
+      <Dependent Role="Test_Student">
+        <PropertyRef Name="StructureId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TEST_TES_REFERENCE_TEST_STU">
+    <End Role="Test_Student" Type="Self.Test_Student" Multiplicity="0..1" />
+    <End Role="Test_TestInfo" Type="Self.Test_TestInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test_Student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Test_TestInfo">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TEST_TES_REFERENCE_TEST_SUB">
+    <End Role="Test_Subject" Type="Self.Test_Subject" Multiplicity="0..1" />
+    <End Role="Test_TestInfo" Type="Self.Test_TestInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test_Subject">
+        <PropertyRef Name="SubjectId" />
+      </Principal>
+      <Dependent Role="Test_TestInfo">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TestEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Test_SchoolStructure" EntityType="Self.Test_SchoolStructure" />
+    <EntitySet Name="Test_Student" EntityType="Self.Test_Student" />
+    <EntitySet Name="Test_Subject" EntityType="Self.Test_Subject" />
+    <EntitySet Name="Test_TestInfo" EntityType="Self.Test_TestInfo" />
+    <AssociationSet Name="FK_TEST_STU_REFERENCE_TEST_SCH" Association="Self.FK_TEST_STU_REFERENCE_TEST_SCH">
+      <End Role="Test_SchoolStructure" EntitySet="Test_SchoolStructure" />
+      <End Role="Test_Student" EntitySet="Test_Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TEST_TES_REFERENCE_TEST_STU" Association="Self.FK_TEST_TES_REFERENCE_TEST_STU">
+      <End Role="Test_Student" EntitySet="Test_Student" />
+      <End Role="Test_TestInfo" EntitySet="Test_TestInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TEST_TES_REFERENCE_TEST_SUB" Association="Self.FK_TEST_TES_REFERENCE_TEST_SUB">
+      <End Role="Test_Subject" EntitySet="Test_Subject" />
+      <End Role="Test_TestInfo" EntitySet="Test_TestInfo" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TestModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TestModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

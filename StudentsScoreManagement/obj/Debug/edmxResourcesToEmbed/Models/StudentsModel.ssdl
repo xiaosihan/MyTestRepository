@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Test_SchoolStructure">
+    <Key>
+      <PropertyRef Name="StructureId" />
+    </Key>
+    <Property Name="StructureId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Grade" Type="int" />
+    <Property Name="Class" Type="int" />
+  </EntityType>
+  <EntityType Name="Test_Student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StructureId" Type="int" />
+    <Property Name="StudentNum" Type="nvarchar" MaxLength="8" />
+    <Property Name="Name" Type="nvarchar" MaxLength="6" />
+    <Property Name="BirthDay" Type="date" />
+    <Property Name="Age" Type="int" />
+  </EntityType>
+  <EntityType Name="Test_Subject">
+    <Key>
+      <PropertyRef Name="SubjectId" />
+    </Key>
+    <Property Name="SubjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="20" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="Test_TestInfo">
+    <Key>
+      <PropertyRef Name="TestId" />
+    </Key>
+    <Property Name="TestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SubjectId" Type="int" />
+    <Property Name="Id" Type="int" />
+    <Property Name="StartTime" Type="datetime" />
+    <Property Name="EndTime" Type="datetime" />
+  </EntityType>
+  <Association Name="FK_TEST_STU_REFERENCE_TEST_SCH">
+    <End Role="Test_SchoolStructure" Type="Self.Test_SchoolStructure" Multiplicity="0..1" />
+    <End Role="Test_Student" Type="Self.Test_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test_SchoolStructure">
+        <PropertyRef Name="StructureId" />
+      </Principal>
+      <Dependent Role="Test_Student">
+        <PropertyRef Name="StructureId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TEST_TES_REFERENCE_TEST_STU">
+    <End Role="Test_Student" Type="Self.Test_Student" Multiplicity="0..1" />
+    <End Role="Test_TestInfo" Type="Self.Test_TestInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test_Student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Test_TestInfo">
+        <PropertyRef Name="Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TEST_TES_REFERENCE_TEST_SUB">
+    <End Role="Test_Subject" Type="Self.Test_Subject" Multiplicity="0..1" />
+    <End Role="Test_TestInfo" Type="Self.Test_TestInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Test_Subject">
+        <PropertyRef Name="SubjectId" />
+      </Principal>
+      <Dependent Role="Test_TestInfo">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="TestModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Test_SchoolStructure" EntityType="Self.Test_SchoolStructure" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Test_Student" EntityType="Self.Test_Student" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Test_Subject" EntityType="Self.Test_Subject" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Test_TestInfo" EntityType="Self.Test_TestInfo" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_TEST_STU_REFERENCE_TEST_SCH" Association="Self.FK_TEST_STU_REFERENCE_TEST_SCH">
+      <End Role="Test_SchoolStructure" EntitySet="Test_SchoolStructure" />
+      <End Role="Test_Student" EntitySet="Test_Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TEST_TES_REFERENCE_TEST_STU" Association="Self.FK_TEST_TES_REFERENCE_TEST_STU">
+      <End Role="Test_Student" EntitySet="Test_Student" />
+      <End Role="Test_TestInfo" EntitySet="Test_TestInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TEST_TES_REFERENCE_TEST_SUB" Association="Self.FK_TEST_TES_REFERENCE_TEST_SUB">
+      <End Role="Test_Subject" EntitySet="Test_Subject" />
+      <End Role="Test_TestInfo" EntitySet="Test_TestInfo" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
