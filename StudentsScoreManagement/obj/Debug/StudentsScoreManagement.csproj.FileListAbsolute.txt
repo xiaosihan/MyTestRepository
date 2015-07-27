@@ -1,4 +1,3 @@
-E:\GitRepos\NewRepo\StudentsScoreManagement\bin\Debug\StudentsScoreManagement.dll.config
 E:\GitRepos\NewRepo\StudentsScoreManagement\bin\Debug\StudentsScoreManagement.dll
 E:\GitRepos\NewRepo\StudentsScoreManagement\bin\Debug\StudentsScoreManagement.pdb
 E:\GitRepos\NewRepo\StudentsScoreManagement\bin\Debug\EntityFramework.dll
@@ -9,3 +8,4 @@ E:\GitRepos\NewRepo\StudentsScoreManagement\bin\Debug\zh-Hans\EntityFramework.re
 E:\GitRepos\NewRepo\StudentsScoreManagement\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
 E:\GitRepos\NewRepo\StudentsScoreManagement\obj\Debug\StudentsScoreManagement.dll
 E:\GitRepos\NewRepo\StudentsScoreManagement\obj\Debug\StudentsScoreManagement.pdb
+E:\GitRepos\NewRepo\StudentsScoreManagement\obj\Debug\StudentsScoreManagement.csprojResolveAssemblyReference.cache

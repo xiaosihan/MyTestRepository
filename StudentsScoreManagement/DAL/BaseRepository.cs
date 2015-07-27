@@ -4,13 +4,13 @@ using System.Data.Entity;
 
 namespace StudentsScoreManagement.DAL
 {
-    public class BaseDao<T> where T : class
+    public class BaseRepository<T> where T : class
     {
         #region
         protected TestEntities testEntities;
         protected DbSet<T> dbSet;
 
-        public BaseDao(TestEntities testEntities)
+        public BaseRepository(TestEntities testEntities)
         {
             this.dbSet = testEntities.Set<T>();
             this.testEntities = testEntities;
@@ -26,16 +26,14 @@ namespace StudentsScoreManagement.DAL
         public T Create(T entity)
         {
             var obj = this.dbSet.Add(entity);
-            this.testEntities.SaveChanges();
-            return obj;
-
+            return Save() > 0 ? obj : null;
         }
 
-        public T Update(T entity, object id)
+        public bool Update(T entity, object id)
         {
-            var originalEntity = Find(id);
-            Helper.CopyObjectValue(entity, originalEntity);
-            return entity;
+            this.dbSet.Attach(entity);
+            this.testEntities.Entry(entity).State = EntityState.Modified;
+            return Save() > 0;
         }
 
         /// <summary>
@@ -62,17 +60,18 @@ namespace StudentsScoreManagement.DAL
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public T Delete(T entity)
+        public bool Delete(T entity)
         {
-            return this.dbSet.Remove(entity);
+            var obj = this.dbSet.Remove(entity);
+            return Save() > 0;
         }
 
         /// <summary>
         /// 提交变更
         /// </summary>
-        public void Save()
+        public int Save()
         {
-            this.testEntities.SaveChanges();
+           return this.testEntities.SaveChanges();
         }
     }
 }

@@ -11,7 +11,8 @@ namespace StudentsScoreManagement.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Test_Student
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,6 +25,7 @@ namespace StudentsScoreManagement.Models
         public Nullable<int> StructureId { get; set; }
         public string StudentNum { get; set; }
         public string Name { get; set; }
+        [DataType(DataType.Date)]
         public Nullable<System.DateTime> BirthDay { get; set; }
         public Nullable<int> Age { get; set; }
     

@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace StudentsScoreManagement.DAL
 {
-    public class StudentDao : BaseDao<Test_Student>
+    public class SchoolStructureRepository : BaseRepository<Test_SchoolStructure>
     {
-        public StudentDao(TestEntities testEntities) :
+        private readonly TestEntities entities;
+
+        public SchoolStructureRepository(TestEntities testEntities) :
             base(testEntities)
         {
+            this.entities = testEntities;
         }
 
     }

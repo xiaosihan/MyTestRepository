@@ -53,8 +53,11 @@
   <ItemGroup>
     <Compile Include="BLL\StudentManager.cs" />
     <Compile Include="Common\Helper.cs" />
-    <Compile Include="DAL\BaseDao.cs" />
-    <Compile Include="DAL\StudentDao.cs" />
+    <Compile Include="DAL\BaseRepository.cs" />
+    <Compile Include="DAL\SubjectRepository.cs" />
+    <Compile Include="DAL\TestInfoRepository.cs" />
+    <Compile Include="DAL\SchoolStructureRepository.cs" />
+    <Compile Include="DAL\StudentRepository.cs" />
     <Compile Include="Models\StudentsModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -87,7 +90,6 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <None Include="Models\StudentsModel.edmx.diagram">
       <DependentUpon>StudentsModel.edmx</DependentUpon>
     </None>

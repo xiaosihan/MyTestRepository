@@ -10,34 +10,31 @@ namespace StudentsScoreManagement.BLL
 {
     public class StudentManager
     {
-        private readonly TestEntities testEntities;
-        private readonly StudentDao thisDao;
+        private readonly StudentRepository thisDao;
 
         public StudentManager()
         {
-            testEntities = new TestEntities();
-            thisDao = new StudentDao(testEntities);
+            TestEntities testEntities = new TestEntities();
+            thisDao = new StudentRepository(testEntities);
         }
 
-        public void AddStudent(Test_Student entity)
+        public int AddStudent(Test_Student entity)
         {
-            using (testEntities)
+            try
             {
-                try
+                if (thisDao.FindAll().Where(s => s.StudentNum == entity.StudentNum).FirstOrDefault() != null)
                 {
-                    if (thisDao.FindAll().Where(s => s.StudentNum == entity.StudentNum).FirstOrDefault() != null)
-                    {
-                        throw new Exception("学号重复！");
-                    }
-                    thisDao.Create(entity);
-                    entity.StudentNum = (int.Parse(entity.StudentNum) + 1).ToString();
-                    thisDao.Update(entity, entity.Id);
-                    thisDao.Save();
+                    throw new Exception("学号重复！");
                 }
-                catch (Exception ex)
-                {
-                    throw new Exception("操作失败，原因:" + ex.Message);
-                }
+                var entityWithPK = thisDao.Create(entity);
+                if (entityWithPK != null)
+                    return entity.Id;
+                else
+                    return -1;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("操作失败，原因:" + ex.Message);
             }
         }
     }
